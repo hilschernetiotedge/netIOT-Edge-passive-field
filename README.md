@@ -2,9 +2,9 @@
 
 For platform details read on [here](https://www.netiot.com/netiot/netiot-edge/).
 
-### Passive fieldbus raw data access from container example
+### Passive fieldbus raw data access in a container
 
-The image provided hereunder deploys a container which contains all necessary libraries to grant access to raw frame data of the passive fieldbus interface.
+The image provided hereunder deploys a container which contains all necessary libraries to grant access to the raw frame data of the fieldbus interface when it is running in so-called "listener" or "passive" mode.
 Note, that using the passive fieldbus interface requires an appropriate license on the NIOT-E-TIJCX-GB edge gateway.
 
 Base of this image builds a tagged version of [ubuntu](https://hub.docker.com/r/library/ubuntu/tags/14.04/) with enabled [SSH](https://en.wikipedia.org/wiki/Secure_Shell).
@@ -13,15 +13,11 @@ Base of this image builds a tagged version of [ubuntu](https://hub.docker.com/r/
 
 ##### Port mapping
 
-The image SSH port `22` needs to be mapped to an unused gateway port, e.g. `22` to be available for remote access.
+For remote login to the container across SSH the container's SSH port `22` needs to be mapped to any free host port.
 
 ##### Privileged mode
 
 Only the privileged mode option lifts the enforced container limitations to allow usage of the passive fieldbus interface in a container.
-
-#### Container start
-
-Pulling the image from Docker Hub may take up to 5 minutes average. 
 
 #### Getting started
 
@@ -31,19 +27,19 @@ STEP 2. Click the Docker tile to open the [Portainer.io](http://portainer.io/) D
 
 STEP 3. Enter the following parameters under **Containers > Add Container**
 
-* **Image**: `hilschernetiotedge/netiot-edge-ubuntu-ssh-passive-fieldbus-raw`
+* **Image**: `hilschernetiotedge/passive-fieldbus`
 
 * **Restart policy**: `always`
 
-* **Port mapping**: `Host: 22 -> Container: 22`
+* **Port mapping**: `Host "22" (any unused one) -> Container "22"` 
 
 * **Runtime > Privileged mode** : `On`
 
-* **Runtime > Devices > add device**
-**Host path:** `/dev/netanalyzer_0`
-**Container path:** `/dev/netanalyzer_0`
+* **Runtime > Devices > add device** `Host "/dev/netanalyzer_0" -> Container "/dev/netanalyzer_0"`
 
 STEP 4. Press the button **Actions > Start container**
+
+Pulling the image from Docker Hub may take up to 5 minutes average. 
 
 #### Accessing
 
@@ -73,9 +69,8 @@ Where `cifXANALYZER_0` represents the passive fieldbus interface.
 
 To start a capture type `dumpcap -i cifXANALYZER_0` or `tshark -i cifXANALYZER_0` respectively
 
-
 ### GitHub sources
-The image is built from the GitHub project [passive-fieldbus-raw](https://github.com/hilschernetiotedge/passive-fieldbus-raw). It complies with the [Dockerfile](https://docs.docker.com/engine/reference/builder/) method to build a Docker image [automated](https://docs.docker.com/docker-hub/builds/). 
+The image is built from the GitHub project [passive-fieldbus](https://github.com/hilschernetiotedge/passive-fieldbus). It complies with the [Dockerfile](https://docs.docker.com/engine/reference/builder/) method to build a Docker image [automated](https://docs.docker.com/docker-hub/builds/). 
 
    
 [![N|Solid](http://www.hilscher.com/fileadmin/templates/doctima_2013/resources/Images/logo_hilscher.png)](http://www.hilscher.com)  Hilscher Gesellschaft fuer Systemautomation mbH  www.hilscher.com
